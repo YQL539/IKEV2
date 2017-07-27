@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1803D9911F29CFF6001BD066 /* IkEV2Client.m in Sources */ = {isa = PBXBuildFile; fileRef = 1803D9901F29CFF6001BD066 /* IkEV2Client.m */; };
 		181992FB1F1DF0D900020F60 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181992FA1F1DF0D900020F60 /* NetworkExtension.framework */; };
+		1826B6941F29E7170014C190 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1826B6931F29E7170014C190 /* TestViewController.m */; };
 		18D1088E1F28953B000BE3DB /* 2.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 18D1088D1F28953B000BE3DB /* 2.mobileconfig */; };
 		865FD45A1EE14BFC000F243F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 865FD4591EE14BFC000F243F /* main.m */; };
 		865FD45D1EE14BFC000F243F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 865FD45C1EE14BFC000F243F /* AppDelegate.m */; };
@@ -42,6 +43,8 @@
 		1803D9901F29CFF6001BD066 /* IkEV2Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IkEV2Client.m; sourceTree = "<group>"; };
 		181992FA1F1DF0D900020F60 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		181992FC1F1DF0D900020F60 /* VPN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VPN.entitlements; sourceTree = "<group>"; };
+		1826B6921F29E7170014C190 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		1826B6931F29E7170014C190 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		18D1088D1F28953B000BE3DB /* 2.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2.mobileconfig; sourceTree = "<group>"; };
 		865FD4551EE14BFC000F243F /* VPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		865FD4591EE14BFC000F243F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -118,6 +121,8 @@
 				865FD45F1EE14BFC000F243F /* ViewController.m */,
 				1803D98F1F29CFF6001BD066 /* IkEV2Client.h */,
 				1803D9901F29CFF6001BD066 /* IkEV2Client.m */,
+				1826B6921F29E7170014C190 /* TestViewController.h */,
+				1826B6931F29E7170014C190 /* TestViewController.m */,
 				865FD4611EE14BFC000F243F /* Main.storyboard */,
 				18D1088D1F28953B000BE3DB /* 2.mobileconfig */,
 				865FD4641EE14BFC000F243F /* Assets.xcassets */,
@@ -317,6 +322,7 @@
 				865FD4601EE14BFC000F243F /* ViewController.m in Sources */,
 				865FD45D1EE14BFC000F243F /* AppDelegate.m in Sources */,
 				865FD45A1EE14BFC000F243F /* main.m in Sources */,
+				1826B6941F29E7170014C190 /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

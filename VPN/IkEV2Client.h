@@ -7,6 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+//服务器地址
+static NSString * const serviceName = @"119.28.44.232";
+//用户名
+static NSString * const userName = @"a";
+//用户密码
+static NSString * const passWord = @"666666";
+//PSKPassword
+static NSString * const PSKPassword = @"888888";
 
 @interface IkEV2Client : NSObject
 

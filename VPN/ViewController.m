@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import <NetworkExtension/NetworkExtension.h>
-#import "IkEV2Client.h"
 @interface ViewController ()
 @property (nonatomic, strong) NEVPNManager *manage;
 @end
@@ -22,63 +21,63 @@
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://123.207.70.64/2.mobileconfig"]];
     
     
-//    self.manage = [NEVPNManager sharedManager];
-//    [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
-//        NSError *errors = error;
-//        if (errors) {
-//            NSLog(@"%@",errors);
-//        }
-//        else{
-//            NEVPNProtocolIKEv2 *p = [[NEVPNProtocolIKEv2 alloc] init];
-//            //用户名
-//            p.username = @"a";
-//            //服务器地址
-//            p.serverAddress = @"119.28.44.232";
-//            //密码
-//            [self createKeychainValue:@"666666" forIdentifier:@"VPN_PASSWORD"];
-//            p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
-//            //共享秘钥    可以和密码同一个.
-//            [self createKeychainValue:@"888888" forIdentifier:@"PSK"];
-//            p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
-//            p.localIdentifier = @"";
-//            p.remoteIdentifier = @"119.28.44.232";
-///********************************************************************************************************************/
-//            //导入p12证书
-////            NSData *cerData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"client.cert" ofType:@"p12"]];
-////            p.identityData = cerData;
-////            p.identityReference = cerData;
-////            //导入p12密码
-////            p.identityDataPassword = @"666";
-////            p.serverCertificateCommonName = @"WY VPN Profile";
-////            p.serverCertificateIssuerCommonName = @"WY IKEv2 VPN";
-////            p.certificateType=NEVPNIKEv2CertificateTypeECDSA256;
-////            p.disableMOBIKE = YES;
-////            p.deadPeerDetectionRate = NEVPNIKEv2DeadPeerDetectionRateMedium;
-//            
-///***********************************************************************************************************************************/
-//            //NEVPNIKEAuthenticationMethodCertificate===useExtendedAuthentication设为yes==需要Safari安装CA证书连接
-//            //NEVPNIKEAuthenticationMethodSharedSecret
-//            //NEVPNIKEAuthenticationMethodNone==useExtendedAuthentication设为YES==不用配置证书直接连接=EAP必须打开
-//            p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
-//            p.useExtendedAuthentication = YES;
-//            p.disconnectOnSleep = YES;
-//            self.manage.onDemandEnabled = NO;
-//            
-//            [self.manage setProtocolConfiguration:p];
-//            self.manage.localizedDescription = @"p12测试";
-//            
-//            self.manage.enabled = true;
-//
-//            [self.manage saveToPreferencesWithCompletionHandler:^(NSError *error) {
-//                if(error) {
-//                    NSLog(@"Save error: %@", error);
-//                }
-//                else {
-//                    NSLog(@"Saved!");
-//                }
-//            }];
-//        }
-//    }];
+    self.manage = [NEVPNManager sharedManager];
+    [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+        NSError *errors = error;
+        if (errors) {
+            NSLog(@"%@",errors);
+        }
+        else{
+            NEVPNProtocolIKEv2 *p = [[NEVPNProtocolIKEv2 alloc] init];
+            //用户名
+            p.username = @"a";
+            //服务器地址
+            p.serverAddress = @"119.28.44.232";
+            //密码
+            [self createKeychainValue:@"666666" forIdentifier:@"VPN_PASSWORD"];
+            p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
+            //共享秘钥    可以和密码同一个.
+            [self createKeychainValue:@"888888" forIdentifier:@"PSK"];
+            p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
+            p.localIdentifier = @"";
+            p.remoteIdentifier = @"119.28.44.232";
+/********************************************************************************************************************/
+            //导入p12证书
+//            NSData *cerData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"client.cert" ofType:@"p12"]];
+//            p.identityData = cerData;
+//            p.identityReference = cerData;
+//            //导入p12密码
+//            p.identityDataPassword = @"666";
+//            p.serverCertificateCommonName = @"WY VPN Profile";
+//            p.serverCertificateIssuerCommonName = @"WY IKEv2 VPN";
+//            p.certificateType=NEVPNIKEv2CertificateTypeECDSA256;
+//            p.disableMOBIKE = YES;
+//            p.deadPeerDetectionRate = NEVPNIKEv2DeadPeerDetectionRateMedium;
+            
+/***********************************************************************************************************************************/
+            //NEVPNIKEAuthenticationMethodCertificate===useExtendedAuthentication设为yes==需要Safari安装CA证书连接
+            //NEVPNIKEAuthenticationMethodSharedSecret
+            //NEVPNIKEAuthenticationMethodNone==useExtendedAuthentication设为YES==不用配置证书直接连接=EAP必须打开
+            p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
+            p.useExtendedAuthentication = YES;
+            p.disconnectOnSleep = YES;
+            self.manage.onDemandEnabled = NO;
+            
+            [self.manage setProtocolConfiguration:p];
+            self.manage.localizedDescription = @"p12测试";
+            
+            self.manage.enabled = true;
+
+            [self.manage saveToPreferencesWithCompletionHandler:^(NSError *error) {
+                if(error) {
+                    NSLog(@"Save error: %@", error);
+                }
+                else {
+                    NSLog(@"Saved!");
+                }
+            }];
+        }
+    }];
 
    
     
@@ -126,26 +125,24 @@
 }
 
 - (void)connected{
-//    NSError *error = nil;
-//    [self.manage.connection startVPNTunnelAndReturnError:&error];
-//    if(error) {
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"连接错误原因" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-//        [alertController addAction:alertAction];
-//        [self presentViewController:alertController animated:YES completion:nil];
-//        
-//        NSLog(@"Start error: %@", error.localizedDescription);
-//    }
-//    else
-//    {
-//        NSLog(@"Connection established!");
-//    }
-    [[IkEV2Client sharedMYSocketManager] startVPNConnect];
+    NSError *error = nil;
+    [self.manage.connection startVPNTunnelAndReturnError:&error];
+    if(error) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"连接错误原因" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:alertAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        NSLog(@"Start error: %@", error.localizedDescription);
+    }
+    else
+    {
+        NSLog(@"Connection established!");
+    }
 }
 
 -(void)disconnected{
-//    [self.manage.connection stopVPNTunnel];
-    [[IkEV2Client sharedMYSocketManager] endVPNConnect];
+    [self.manage.connection stopVPNTunnel];
 }
 
 - (NSData *)searchKeychainCopyMatching:(NSString *)identifier {

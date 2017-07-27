@@ -42,29 +42,24 @@
         else{
             NEVPNProtocolIKEv2 *p = [[NEVPNProtocolIKEv2 alloc] init];
             //用户名
-            p.username = @"a";
+            p.username = userName;
             //服务器地址
-            p.serverAddress = @"119.28.44.232";
+            p.serverAddress = serviceName;
             //密码
-            [self createKeychainValue:@"666666" forIdentifier:@"VPN_PASSWORD"];
+            [self createKeychainValue:passWord forIdentifier:@"VPN_PASSWORD"];
             p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
             //共享秘钥    可以和密码同一个.
-            [self createKeychainValue:@"888888" forIdentifier:@"PSK"];
+            [self createKeychainValue:PSKPassword forIdentifier:@"PSK"];
             p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
             p.localIdentifier = @"";
-            p.remoteIdentifier = @"119.28.44.232";
-            //NEVPNIKEAuthenticationMethodCertificate===useExtendedAuthentication设为yes==需要Safari安装CA证书连接
-            //NEVPNIKEAuthenticationMethodSharedSecret
-            //NEVPNIKEAuthenticationMethodNone==useExtendedAuthentication设为YES==不用配置证书直接连接=EAP必须打开
+            p.remoteIdentifier = serviceName;
             p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
             p.useExtendedAuthentication = YES;
             p.disconnectOnSleep = YES;
             self.manage.onDemandEnabled = NO;
             [self.manage setProtocolConfiguration:p];
             self.manage.localizedDescription = @"client测试";
-            
             self.manage.enabled = true;
-            
             [self.manage saveToPreferencesWithCompletionHandler:^(NSError *error) {
                 if(error) {
                     NSLog(@"Save error: %@", error);
@@ -75,7 +70,6 @@
             }];
         }
     }];
-
 }
 -(void)startVPNConnect
 {
@@ -117,9 +111,6 @@
     }
     return NO;
 }
-
-//服务器地址
-static NSString * const serviceName = @"119.28.44.232";
 
 - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
     //   keychain item creat
