@@ -1,0 +1,98 @@
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Read more: https://wiki.strongswan.org/projects/strongswan/wiki/AppleIKEv2Profile -->
+<plist version="1.0">
+    <dict>
+        <!-- Set the name to whatever you like, it is used in the profile list on the device -->
+        <key>PayloadDisplayName</key>
+        <string>WY VPN Profile</string>
+        <!-- This is a reverse-DNS style unique identifier used to detect duplicate profiles -->
+        <key>PayloadIdentifier</key>
+        <string>119.28.44.232</string>
+        <!-- A globally unique identifier, use uuidgen on Linux/Mac OS X to generate it -->
+        <key>PayloadUUID</key>
+        <string>VM_75_205_centos</string>
+        <key>PayloadType</key>
+        <string>Configuration</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+        <key>PayloadContent</key>
+        <array>
+            <!-- It is possible to add multiple VPN payloads with different identifiers/UUIDs and names -->
+            <dict>
+                <!-- This is an extension of the identifier given above -->
+                <key>PayloadIdentifier</key>
+                <string>WOYUN VPN Config File</string>
+                <!-- A globally unique identifier for this payload -->
+                <key>PayloadUUID</key>
+                <string>eeb07333-4a3e-4bbb-ad8e-2a14c2721bea</string>
+                <key>PayloadType</key>
+                <string>com.apple.vpn.managed</string>
+                <key>PayloadVersion</key>
+                <integer>1</integer>
+                <!-- This is the name of the VPN connection as seen in the VPN application later -->
+                <key>UserDefinedName</key>
+                <string>WY IKEv2 VPN</string>
+                <key>VPNType</key>
+                <string>IKEv2</string>
+                <key>IKEv2</key>
+                <dict>
+                    <!-- Hostname or IP address of the VPN server -->
+                    <key>RemoteAddress</key>
+                    <string>119.28.44.232</string>
+                    <!-- Remote identity, can be a FQDN, a userFQDN, an IP or (theoretically) a certificate's subject DN. Can't be empty.
+                     IMPORTANT: DNs are currently not handled correctly, they are always sent as identities of type FQDN -->
+                    <key>RemoteIdentifier</key>
+                    <string>119.28.44.232</string>
+                    <!-- Local IKE identity, same restrictions as above. If it is empty the client's IP address will be used -->
+                    <key>LocalIdentifier</key>
+                    <string>ww</string>
+                    <!--
+                    OnDemand references:
+                    http://www.v2ex.com/t/137653
+                    https://developer.apple.com/library/mac/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html
+                    Continue reading:
+                    https://github.com/iphoting/ovpnmcgen.rb
+                    -->
+                    <key>OnDemandEnabled</key>
+                    <integer>1</integer>
+                    <key>OnDemandRules</key>
+                    <array>
+                        <dict>
+                            <key>Action</key>
+                            <string>Connect</string>
+                        </dict>
+                    </array>
+                    <!-- The server is authenticated using a certificate -->
+                    <key>AuthenticationMethod</key>
+                    <string>Certificate</string>
+                    <!-- The client uses EAP to authenticate -->
+                    <key>ExtendedAuthEnabled</key>
+                    <integer>1</integer>
+   <key>AuthName</key>
+                <string>a</string>
+                <key>AuthPassword</key>
+<string>666666</string>
+<key>PayloadContent</key>
+                <data>MIIDHDCCAgSgAwIBAgIIQ9/8k3bIFkgwDQYJKoZIhvcNAQELBQAwLDELMAkGA1UE
+BhMCQ04xDjAMBgNVBAoTBUlUbm1nMQ0wCwYDVQQDEwRXWUNBMB4XDTE3MDcxOTE1
+MzAxNVoXDTI3MDcxNzE1MzAxNVowLDELMAkGA1UEBhMCQ04xDjAMBgNVBAoTBUlU
+bm1nMQ0wCwYDVQQDEwRXWUNBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAoC97ea7GiLcjA/qTRSTTWvNUW9fHIXg13JAdm2U+uGnHT/95pRyOKp9B7NP8
+Q72be6DuLD2hXubmobzkTfuOes80JL2ldV17x4iYcSOP9zUT/rmTUEVvL7a88kb5
+0GS5JWhbJEg+kGI/ey4dqWbA3r0reG0nVsI0iAjjwAse+AV6sKPHyK5oYIfoyc8s
+PsxkDc8Amv39u3H5hkF5lD1juC9lWPUHB3ajA2MXyUM6zkF0c2JQ5Sf7PBwYiSbJ
+WSb9KT9TXV1F6LB/XOZx5yvTTjoKq6ACRAxhUUTd1VMk4O12YduvATXY3f/cfC47
+phxGPRFx4gXJdBfGYQ8qRT5aSQIDAQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MA4G
+A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUkcmx+qIFSi406/9r08R2xF0fUNswDQYJ
+KoZIhvcNAQELBQADggEBAICuAdLMikkObuOaHUMP5eyWoJV2Gt1XSIThRRYKsoCR
+H65a7UD88QsgbjD8eAiosonhfseFyQl+/FO4mUryIcMejs/EomgvWHqaQqz/4ame
+L1tpwTa3J1jSACCHKhKBwfG7qYN74ZZ0/qtZAhBGyNFNLuSqSzUmumeQEkHClIqf
+eIrnTHQpzh5v7tEkiHbsj+dmDAvfweqbwehokPC+Yo3PacH9TvZRQLU6bTkTMBqw
+jjs0VId8LpLX4gKNB4rvAWAo6K8eVh6aXnHZv1TU9FLnxUUA3bKiEJwnrBMbeY0v
+W/m9yYVoA7TlUFMCYwOGYEtmjla9d4UKcvRyrchcB8M=
+</data>
+                </dict>
+            </dict>
+        </array>
+    </dict>
+</plist>
