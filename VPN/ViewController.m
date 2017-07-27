@@ -12,32 +12,17 @@
 @interface ViewController ()
 @property (nonatomic, strong) NEVPNManager *manage;
 @end
-
-
-#pragma mark - Demo
-
-/**
- *
- *      如果你的
- *      服务器地址   用户名   密码  是对的话!
- *
- *      这个Demo 是好使的  如果这几个没有填是肯定不好使的,,,,
- *
- *      感谢你看这个代码 辛苦了 !!!  😁  
- *
- */
-
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    NSString *directory = NSHomeDirectory();
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General&path=ManagedConfigurationList"]];
     //证书地址WYCA
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://123.207.70.64/ca.cert.pem"]];
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://123.207.70.64/2.mobileconfig"]];
+    
+    
     self.manage = [NEVPNManager sharedManager];
-
     [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
         NSError *errors = error;
         if (errors) {
@@ -57,8 +42,7 @@
             p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
             p.localIdentifier = @"";
             p.remoteIdentifier = @"119.28.44.232";
-            
-/***********************************************************************************************************************************/
+/********************************************************************************************************************/
             //导入p12证书
 //            NSData *cerData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"client.cert" ofType:@"p12"]];
 //            p.identityData = cerData;
@@ -74,7 +58,7 @@
 /***********************************************************************************************************************************/
             //NEVPNIKEAuthenticationMethodCertificate===useExtendedAuthentication设为yes==需要Safari安装CA证书连接
             //NEVPNIKEAuthenticationMethodSharedSecret
-            //NEVPNIKEAuthenticationMethodNone==useExtendedAuthentication设为YES==不用配置证书直接连接
+            //NEVPNIKEAuthenticationMethodNone==useExtendedAuthentication设为YES==不用配置证书直接连接=EAP必须打开
             p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
             p.useExtendedAuthentication = YES;
             p.disconnectOnSleep = YES;
@@ -100,15 +84,20 @@
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onVpnStateChange:) name:NEVPNStatusDidChangeNotification object:nil];
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(100, 200, 200, 100)];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+    btn.frame = CGRectMake(100, 200, 200, 100);
     [self.view addSubview:btn];
     [btn setTitle:@"点击连接" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     btn.backgroundColor = [UIColor redColor];
     [btn addTarget:self action:@selector(connected) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *btn2 = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 120, 40)];
+    UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeSystem];
+    btn2.frame = CGRectMake(100, 400, 200, 80);
     [self.view addSubview:btn2];
     [btn2 setTitle:@"点击断开" forState:UIControlStateNormal];
+    [btn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     btn2.backgroundColor = [UIColor redColor];
     [btn2 addTarget:self action:@selector(disconnected) forControlEvents:UIControlEventTouchUpInside];
     
@@ -143,7 +132,7 @@
     NSError *error = nil;
     [self.manage.connection startVPNTunnelAndReturnError:&error];
     if(error) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"连接错误" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"连接错误原因" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
         [alertController addAction:alertAction];
         [self presentViewController:alertController animated:YES completion:nil];
@@ -153,20 +142,11 @@
     else
     {
         NSLog(@"Connection established!");
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Connection established!" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:alertAction];
-        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
 -(void)disconnected{
     [self.manage.connection stopVPNTunnel];
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"VPN连接断开" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-    [alertController addAction:alertAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
