@@ -10,6 +10,7 @@
 #import <NetworkExtension/NetworkExtension.h>
 @interface IkEV2Client ()
 @property (nonatomic, strong) NEVPNManager *manage;
+
 @end
 
 @implementation IkEV2Client
@@ -26,14 +27,14 @@
 
 -(instancetype)init{
     if (self == [super init]) {
-        [self prepareVPNConnect];
+         self.manage = [NEVPNManager sharedManager];
     }
     return self;
 }
 
--(void)prepareVPNConnect
+-(void)endVPNConnect
 {
-    self.manage = [NEVPNManager sharedManager];
+    //重置配置的时候会断开VPN连接
     [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
         NSError *errors = error;
         if (errors) {
@@ -44,7 +45,7 @@
             //用户名
             p.username = userName;
             //服务器地址
-            p.serverAddress = serviceName;
+            p.serverAddress = serviceIP;
             //密码
             [self createKeychainValue:passWord forIdentifier:@"VPN_PASSWORD"];
             p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
@@ -52,7 +53,7 @@
             [self createKeychainValue:PSKPassword forIdentifier:@"PSK"];
             p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
             p.localIdentifier = @"";
-            p.remoteIdentifier = serviceName;
+            p.remoteIdentifier = serviceIP;
             p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
             p.useExtendedAuthentication = YES;
             p.disconnectOnSleep = YES;
@@ -73,20 +74,53 @@
 }
 -(void)startVPNConnect
 {
-    NSError *error = nil;
-    [self.manage.connection startVPNTunnelAndReturnError:&error];
-    if(error) {
-        NSLog(@"Start error: %@", error.localizedDescription);
-    }
-    else
-    {
-        NSLog(@"Connection established!");
-    }
-}
-
--(void)endVPNConnect
-{
-    [self.manage.connection stopVPNTunnel];
+        [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+            NSError *errors = error;
+            if (errors) {
+                NSLog(@"错误：%@",errors);
+            }
+            else{
+                NEVPNProtocolIKEv2 *p = [[NEVPNProtocolIKEv2 alloc] init];
+                //用户名
+                p.username = userName;
+                //服务器地址
+                p.serverAddress = serviceIP;
+                //密码
+                [self createKeychainValue:passWord forIdentifier:@"VPN_PASSWORD"];
+                p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
+                //共享秘钥  可以和密码同一个.
+                [self createKeychainValue:PSKPassword forIdentifier:@"PSK"];
+                p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
+                p.localIdentifier = @"";
+                p.remoteIdentifier = serviceIP;
+                p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
+                p.useExtendedAuthentication = YES;
+                p.disconnectOnSleep = YES;
+                self.manage.onDemandEnabled = NO;
+                [self.manage setProtocolConfiguration:p];
+                self.manage.localizedDescription = @"WoVPNForStore";
+                self.manage.enabled = true;
+                [self.manage saveToPreferencesWithCompletionHandler:^(NSError *error) {
+                    if(error) {
+                        NSLog(@"Save error1111: %@", error);
+                    }
+                    else {
+                        NSLog(@"Saved!");
+                        NSError *error = nil;
+                        //开始连接
+                        [self.manage.connection startVPNTunnelAndReturnError:&error];
+                        if(error) {
+                            NSLog(@"Start error2222: %@", error.localizedDescription);
+                            [self startVPNConnect];
+                        }
+                        else
+                        {
+                            NSLog(@"Connection established!");
+                        }
+                    }
+                }];
+            }
+        }];
 }
 
 - (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
@@ -125,8 +159,20 @@
     [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
     //ksecClass 主键
     [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
-    [searchDictionary setObject:serviceName forKey:(__bridge id)kSecAttrService];
+    [searchDictionary setObject:serviceIP forKey:(__bridge id)kSecAttrService];
     return searchDictionary;
+}
+
+-(BOOL)isVPNConnectedService
+{
+    NSError *error;
+    NSURL *ipURL = [NSURL URLWithString:@"http://ipof.in/txt"];
+    NSString *ip = [NSString stringWithContentsOfURL:ipURL encoding:NSUTF8StringEncoding error:&error];
+    if ([ip isEqualToString:serviceIP]) {
+        return YES;
+    }else{
+        return NO;
+    }
 }
 
 @end

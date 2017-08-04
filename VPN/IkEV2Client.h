@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 //服务器地址
-static NSString * const serviceName = @"119.28.44.232";
+static NSString * const serviceIP = @"119.28.44.232";
 //用户名
 static NSString * const userName = @"a";
 //用户密码
@@ -21,5 +21,5 @@ static NSString * const PSKPassword = @"888888";
 + (IkEV2Client *)sharedMYSocketManager;
 -(void)startVPNConnect;
 -(void)endVPNConnect;
-
+-(BOOL)isVPNConnectedService;
 @end

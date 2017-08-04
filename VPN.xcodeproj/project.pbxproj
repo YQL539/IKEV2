@@ -11,7 +11,7 @@
 		181992FB1F1DF0D900020F60 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181992FA1F1DF0D900020F60 /* NetworkExtension.framework */; };
 		1826B6941F29E7170014C190 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1826B6931F29E7170014C190 /* TestViewController.m */; };
 		1826B6981F29EDC80014C190 /* CommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1826B6971F29EDC80014C190 /* CommonUtil.m */; };
-		18D1088E1F28953B000BE3DB /* 2.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 18D1088D1F28953B000BE3DB /* 2.mobileconfig */; };
+		1890E3761F2F02340083643A /* client.cert.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1890E3751F2F02340083643A /* client.cert.p12 */; };
 		865FD45A1EE14BFC000F243F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 865FD4591EE14BFC000F243F /* main.m */; };
 		865FD45D1EE14BFC000F243F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 865FD45C1EE14BFC000F243F /* AppDelegate.m */; };
 		865FD4601EE14BFC000F243F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 865FD45F1EE14BFC000F243F /* ViewController.m */; };
@@ -48,7 +48,7 @@
 		1826B6931F29E7170014C190 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		1826B6961F29EDC80014C190 /* CommonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtil.h; sourceTree = "<group>"; };
 		1826B6971F29EDC80014C190 /* CommonUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtil.m; sourceTree = "<group>"; };
-		18D1088D1F28953B000BE3DB /* 2.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2.mobileconfig; sourceTree = "<group>"; };
+		1890E3751F2F02340083643A /* client.cert.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = client.cert.p12; sourceTree = "<group>"; };
 		865FD4551EE14BFC000F243F /* VPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		865FD4591EE14BFC000F243F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		865FD45B1EE14BFC000F243F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -126,10 +126,8 @@
 				1803D9901F29CFF6001BD066 /* IkEV2Client.m */,
 				1826B6921F29E7170014C190 /* TestViewController.h */,
 				1826B6931F29E7170014C190 /* TestViewController.m */,
-				1826B6961F29EDC80014C190 /* CommonUtil.h */,
-				1826B6971F29EDC80014C190 /* CommonUtil.m */,
+				1890E3751F2F02340083643A /* client.cert.p12 */,
 				865FD4611EE14BFC000F243F /* Main.storyboard */,
-				18D1088D1F28953B000BE3DB /* 2.mobileconfig */,
 				865FD4641EE14BFC000F243F /* Assets.xcassets */,
 				865FD4661EE14BFC000F243F /* LaunchScreen.storyboard */,
 				865FD4691EE14BFC000F243F /* Info.plist */,
@@ -141,6 +139,8 @@
 		865FD4581EE14BFC000F243F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1826B6961F29EDC80014C190 /* CommonUtil.h */,
+				1826B6971F29EDC80014C190 /* CommonUtil.m */,
 				865FD4591EE14BFC000F243F /* main.m */,
 			);
 			name = "Supporting Files";
@@ -239,7 +239,7 @@
 				TargetAttributes = {
 					865FD4541EE14BFC000F243F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = LQYXF99GDY;
+						DevelopmentTeam = JG6MYTDY9T;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -296,9 +296,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				865FD4681EE14BFC000F243F /* LaunchScreen.storyboard in Resources */,
-				18D1088E1F28953B000BE3DB /* 2.mobileconfig in Resources */,
 				865FD4651EE14BFC000F243F /* Assets.xcassets in Resources */,
 				865FD4631EE14BFC000F243F /* Main.storyboard in Resources */,
+				1890E3761F2F02340083643A /* client.cert.p12 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,11 +477,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VPN/VPN.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = LQYXF99GDY;
+				DEVELOPMENT_TEAM = JG6MYTDY9T;
 				INFOPLIST_FILE = VPN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.woyun.woWiFiEnterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.woyun.WoVPNForStore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -493,11 +493,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VPN/VPN.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = LQYXF99GDY;
+				DEVELOPMENT_TEAM = JG6MYTDY9T;
 				INFOPLIST_FILE = VPN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.woyun.woWiFiEnterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.woyun.WoVPNForStore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
