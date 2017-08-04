@@ -34,11 +34,36 @@
 
 -(void)endVPNConnect
 {
-    //重置配置的时候会断开VPN连接
+    [self prepareVPNConnectWithCompleteHandle:nil];
+}
+-(void)startVPNConnect
+{
+    [self prepareVPNConnectWithCompleteHandle:^(NSError *error) {
+        if(error) {
+            NSLog(@"Save error1111: %@", error);
+        }
+        else {
+            NSLog(@"Saved!");
+            NSError *error = nil;
+            //开始连接
+            [self.manage.connection startVPNTunnelAndReturnError:&error];
+            if(error) {
+                NSLog(@"Start error2222: %@", error.localizedDescription);
+                [self startVPNConnect];
+            }
+            else
+            {
+                NSLog(@"Connection established!");
+            }
+        }
+    }];
+}
+
+-(void)prepareVPNConnectWithCompleteHandle:(void(^)(NSError *error))complete{
     [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
         NSError *errors = error;
         if (errors) {
-            NSLog(@"%@",errors);
+            NSLog(@"错误：%@",errors);
         }
         else{
             NEVPNProtocolIKEv2 *p = [[NEVPNProtocolIKEv2 alloc] init];
@@ -49,7 +74,7 @@
             //密码
             [self createKeychainValue:passWord forIdentifier:@"VPN_PASSWORD"];
             p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
-            //共享秘钥    可以和密码同一个.
+            //共享秘钥  可以和密码同一个.
             [self createKeychainValue:PSKPassword forIdentifier:@"PSK"];
             p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
             p.localIdentifier = @"";
@@ -59,69 +84,13 @@
             p.disconnectOnSleep = YES;
             self.manage.onDemandEnabled = NO;
             [self.manage setProtocolConfiguration:p];
-            self.manage.localizedDescription = @"client测试";
+            self.manage.localizedDescription = @"WoVPNForStore";
             self.manage.enabled = true;
-            [self.manage saveToPreferencesWithCompletionHandler:^(NSError *error) {
-                if(error) {
-                    NSLog(@"Save error: %@", error);
-                }
-                else {
-                    NSLog(@"Saved!");
-                }
-            }];
+            [self.manage saveToPreferencesWithCompletionHandler:complete];
         }
     }];
 }
--(void)startVPNConnect
-{
-        [self.manage loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
-            NSError *errors = error;
-            if (errors) {
-                NSLog(@"错误：%@",errors);
-            }
-            else{
-                NEVPNProtocolIKEv2 *p = [[NEVPNProtocolIKEv2 alloc] init];
-                //用户名
-                p.username = userName;
-                //服务器地址
-                p.serverAddress = serviceIP;
-                //密码
-                [self createKeychainValue:passWord forIdentifier:@"VPN_PASSWORD"];
-                p.passwordReference =  [self searchKeychainCopyMatching:@"VPN_PASSWORD"];
-                //共享秘钥  可以和密码同一个.
-                [self createKeychainValue:PSKPassword forIdentifier:@"PSK"];
-                p.sharedSecretReference = [self searchKeychainCopyMatching:@"PSK"];
-                p.localIdentifier = @"";
-                p.remoteIdentifier = serviceIP;
-                p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
-                p.useExtendedAuthentication = YES;
-                p.disconnectOnSleep = YES;
-                self.manage.onDemandEnabled = NO;
-                [self.manage setProtocolConfiguration:p];
-                self.manage.localizedDescription = @"WoVPNForStore";
-                self.manage.enabled = true;
-                [self.manage saveToPreferencesWithCompletionHandler:^(NSError *error) {
-                    if(error) {
-                        NSLog(@"Save error1111: %@", error);
-                    }
-                    else {
-                        NSLog(@"Saved!");
-                        NSError *error = nil;
-                        //开始连接
-                        [self.manage.connection startVPNTunnelAndReturnError:&error];
-                        if(error) {
-                            NSLog(@"Start error2222: %@", error.localizedDescription);
-                            [self startVPNConnect];
-                        }
-                        else
-                        {
-                            NSLog(@"Connection established!");
-                        }
-                    }
-                }];
-            }
-        }];
-}
+
 
 - (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
