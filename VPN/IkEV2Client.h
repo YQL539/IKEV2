@@ -19,7 +19,11 @@ static NSString * const PSKPassword = @"888888";
 @interface IkEV2Client : NSObject
 
 + (IkEV2Client *)sharedMYSocketManager;
+//开始连接
 -(void)startVPNConnect;
+//连接断开
 -(void)endVPNConnect;
+//是否连接服务器
 -(BOOL)isVPNConnectedService;
+
 @end

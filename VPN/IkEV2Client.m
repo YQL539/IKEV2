@@ -8,6 +8,7 @@
 
 #import "IkEV2Client.h"
 #import <NetworkExtension/NetworkExtension.h>
+#import <ifaddrs.h>
 @interface IkEV2Client ()
 @property (nonatomic, strong) NEVPNManager *manage;
 
@@ -30,33 +31,6 @@
          self.manage = [NEVPNManager sharedManager];
     }
     return self;
-}
-
--(void)endVPNConnect
-{
-    [self prepareVPNConnectWithCompleteHandle:nil];
-}
--(void)startVPNConnect
-{
-    [self prepareVPNConnectWithCompleteHandle:^(NSError *error) {
-        if(error) {
-            NSLog(@"Save error1111: %@", error);
-        }
-        else {
-            NSLog(@"Saved!");
-            NSError *error = nil;
-            //开始连接
-            [self.manage.connection startVPNTunnelAndReturnError:&error];
-            if(error) {
-                NSLog(@"Start error2222: %@", error.localizedDescription);
-                [self startVPNConnect];
-            }
-            else
-            {
-                NSLog(@"Connection established!");
-            }
-        }
-    }];
 }
 
 -(void)prepareVPNConnectWithCompleteHandle:(void(^)(NSError *error))complete{
@@ -82,15 +56,51 @@
             p.authenticationMethod = NEVPNIKEAuthenticationMethodNone;
             p.useExtendedAuthentication = YES;
             p.disconnectOnSleep = YES;
-            self.manage.onDemandEnabled = NO;
+            ////打开后，即时连接wifi，仍然以4Gvpn连接
+//             p.disableMOBIKE=YES;
+            //打开wifi自动断开vpn
+            self.manage.onDemandEnabled = YES;
+            NSMutableArray *rules = [[NSMutableArray alloc] init];
+            NEOnDemandRuleDisconnect *connectRule = [NEOnDemandRuleDisconnect new];
+            //匹配连接方式
+            connectRule.interfaceTypeMatch=NEOnDemandRuleInterfaceTypeWiFi;
+            [rules addObject:connectRule];
+            [self.manage setOnDemandRules:[NSArray arrayWithArray:rules]];
             [self.manage setProtocolConfiguration:p];
-            self.manage.localizedDescription = @"WoVPNForStore";
+            self.manage.localizedDescription = @"IkEV2Client";
             self.manage.enabled = true;
             [self.manage saveToPreferencesWithCompletionHandler:complete];
         }
     }];
 }
 
+-(void)startVPNConnect
+{
+    [self prepareVPNConnectWithCompleteHandle:^(NSError *error) {
+        if(error) {
+            NSLog(@"Save error1111: %@", error);
+        }
+        else {
+            NSLog(@"Saved!");
+            NSError *error = nil;
+            //开始连接
+            [self.manage.connection startVPNTunnelAndReturnError:&error];
+            if(error) {
+                NSLog(@"Start error2222: %@", error.localizedDescription);
+                [self startVPNConnect];
+            }
+            else
+            {
+                NSLog(@"Connection established!");
+            }
+        }
+    }];
+}
+
+-(void)endVPNConnect
+{
+    [self prepareVPNConnectWithCompleteHandle:nil];
+}
 
 - (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
@@ -143,5 +153,30 @@
         return NO;
     }
 }
+
+
+//- (BOOL)isVPNConnected
+//{
+/////////从状态栏取VPN标志，判断VPN是否连接
+//    UIApplication *app = [UIApplication sharedApplication];
+//    UIView *statusView = [app valueForKey:@"statusBar"];
+//    NSArray *subViews = [[statusView valueForKey:@"foregroundView"] subviews];
+//    Class StatusBarIndicatorItemViewClass = NSClassFromString(@"UIStatusBarIndicatorItemView");
+//    for (UIView *subView in subViews)
+//    {
+//        Class SubStatusBarIndicatorItemViewClass = [subView class];
+//        if ([SubStatusBarIndicatorItemViewClass isSubclassOfClass:StatusBarIndicatorItemViewClass])
+//        {
+//            NSString *desc = [subView description];
+//            BOOL isContainedVPN = [desc containsString:@"VPN"];
+//            if (isContainedVPN == YES)
+//            {
+//                return isContainedVPN;
+//            }
+//        }
+//    }
+//    return NO;
+//}
+
 
 @end

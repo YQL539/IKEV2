@@ -81,8 +81,16 @@
         default:
             break;
     }
-    _showLabel.text = show;
+    BOOL isOK = [self isVPNConnected];
+    NSString *VPNStatus = @"";
+    if (isOK) {
+        VPNStatus = @"VPN在连接";
+    }else{
+        VPNStatus = @"VPN没有连接";
+    }
+    _showLabel.text = [VPNStatus stringByAppendingString:show];
 }
+
 - (void)connected{
     [[IkEV2Client sharedMYSocketManager] startVPNConnect];
 }
@@ -92,14 +100,23 @@
 }
 
 -(void)checkIp{
+    
+//    BOOL isOK = [self isVPNConnected];
+//    NSString *connect = @"";
+//    if (isOK) {
+//        connect = @"VPN在连接";
+//    }else{
+//        connect = @"VPN没有连接";
+//    }
     NSError *error;
     NSURL *ipURL = [NSURL URLWithString:@"http://ipof.in/txt"];
     NSString *ip = [NSString stringWithContentsOfURL:ipURL encoding:NSUTF8StringEncoding error:&error];
+    
     if ([ip isEqualToString:@"119.28.44.232"]) {
-        _ipLabel.text = @"=====119.28.44.232===是我们的服务器IP";
+        _ipLabel.text = [NSString stringWithFormat:@"=%@=是我们的服务器IP",ip];
         return;
     }else{
-        _ipLabel.text = @"=====非我们自己服务器IP";
+        _ipLabel.text = [NSString stringWithFormat:@"=%@====非我们自己服务器IP",ip];
     }
 
 }
@@ -112,6 +129,28 @@
                                                   usingBlock:^(NSNotification * _Nonnull note) {
                                                       NSLog(@"startMonitoringVPNStatusDidChange");;
                                                   }];
+}
+
+- (BOOL)isVPNConnected
+{
+    UIApplication *app = [UIApplication sharedApplication];
+    UIView *statusView = [app valueForKey:@"statusBar"];
+    NSArray *subViews = [[statusView valueForKey:@"foregroundView"] subviews];
+    Class StatusBarIndicatorItemViewClass = NSClassFromString(@"UIStatusBarIndicatorItemView");
+    for (UIView *subView in subViews)
+    {
+        Class SubStatusBarIndicatorItemViewClass = [subView class];
+        if ([SubStatusBarIndicatorItemViewClass isSubclassOfClass:StatusBarIndicatorItemViewClass])
+        {
+            NSString *desc = [subView description];
+            BOOL isContainedVPN = [desc containsString:@"VPN"];
+            if (isContainedVPN == YES)
+            {
+                return isContainedVPN;
+            }
+        }
+    }
+    return NO;
 }
 
 @end
